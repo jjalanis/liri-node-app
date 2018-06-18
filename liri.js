@@ -5,6 +5,9 @@ var keys = require('./keys');
 //var spotify = new Spotify(keys.spotify);
 var command = process.argv[2];
 var song = process.argv[3];
+var nodeArgs = process.argv;
+var temp2 = 0;
+var temp1 = 0;
 
 var tweets = function()
 {
@@ -64,14 +67,27 @@ var spotifythis = function (){
 
 var movie = function (){
     var request = require("request");
-    var nodeArgs = process.argv;
     var temp=0;
-
-    if (process.argv[3] === undefined){
-        var movieName = "Mr. Nobody"
+    var movieName = ""
+    if (process.argv[3] === undefined && temp2===0){
+        movieName = "Mr.+Nobody"
    }
-   else{
-    var movieName = "";
+   else if (temp2===1){
+       console.log("entro else if temp 2")
+        var fs = require("fs");
+        fs.readFile("random.txt", "utf8", function(err, data) {
+            if (err) {
+                return console.log(error);
+              }
+              console.log("EWNTORADDEGSFSEFWEFSD")
+            var dataArr = data.split(",");
+            movieName = dataArr[1];
+            console.log(dataArr[1])
+       });
+    }else 
+        {
+            console.log("entrosumasmp ")
+         movieName = "";
         for (var i = 3; i < nodeArgs.length; i++) {
             if (i > 3 && i < nodeArgs.length) {
                 movieName = movieName + "+" + nodeArgs[i];
@@ -81,9 +97,9 @@ var movie = function (){
         }
         }
    }
-    
+    console.log(movieName)
     var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
-    //console.log(queryUrl);
+    console.log(queryUrl);
     request(queryUrl, function(error, response, body) {
     if (!error && response.statusCode === 200) {
         if (JSON.parse(body).Title !== undefined){
@@ -93,7 +109,6 @@ var movie = function (){
         console.log("IMDB Rating: "+JSON.parse(body).imdbRating)
         for (var i=0; i<JSON.parse(body).Ratings.length; i++)
         {  
-            //console.log("entro al for")
             if (JSON.parse(body).Ratings[i].Source === "Rotten Tomatoes"){
             console.log("ROTTEN TOMATOES: "+JSON.parse(body).Ratings[i].Value)
             temp = 1;
@@ -104,7 +119,6 @@ var movie = function (){
         console.log("PLOT: "+JSON.parse(body).Plot)
         console.log("ACTORS: "+JSON.parse(body).Actors)
         console.log("========= MOVIE THIS =========") 
-        //console.log(JSON.parse(body));
         }
         else{
             console.log("========= MOVIE THIS =========") 
@@ -113,6 +127,30 @@ var movie = function (){
         }
   }
 });
+}
+
+var says = function(){
+    var fs = require("fs");
+    fs.readFile("random.txt", "utf8", function(err, data) {
+        if (err) {
+            return console.log(error);
+          }
+          console.log(data);
+          var dataArr = data.split(",");
+          console.log(dataArr);
+        song = dataArr[1];
+        nodeArgs = dataArr[1];
+        switch (dataArr[0]){
+            case "spotify-this-song":
+            spotifythis();
+            break;
+        case "movie-this":
+            movie();
+            break; 
+        }
+
+          
+    }); 
 }
 
 
