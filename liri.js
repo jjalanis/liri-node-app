@@ -11,7 +11,6 @@ var temp1 = 0;
 
 var tweets = function()
 {
-    console.log("entro a twitter");
     var Twitter = require('twitter');
     
     var client = new Twitter({
@@ -73,20 +72,16 @@ var movie = function (){
         movieName = "Mr.+Nobody"
    }
    else if (temp2===1){
-       console.log("entro else if temp 2")
         var fs = require("fs");
         fs.readFile("random.txt", "utf8", function(err, data) {
             if (err) {
                 return console.log(error);
               }
-              console.log("EWNTORADDEGSFSEFWEFSD")
             var dataArr = data.split(",");
             movieName = dataArr[1];
-            console.log(dataArr[1])
        });
     }else 
         {
-            console.log("entrosumasmp ")
          movieName = "";
         for (var i = 3; i < nodeArgs.length; i++) {
             if (i > 3 && i < nodeArgs.length) {
@@ -97,9 +92,8 @@ var movie = function (){
         }
         }
    }
-    console.log(movieName)
     var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
-    console.log(queryUrl);
+    //console.log(queryUrl);
     request(queryUrl, function(error, response, body) {
     if (!error && response.statusCode === 200) {
         if (JSON.parse(body).Title !== undefined){
